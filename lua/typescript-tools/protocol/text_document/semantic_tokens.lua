@@ -62,7 +62,10 @@ local function get_character_position_at_offset(
 
   local current_offset = offset_from_last_iteration
 
-  for line = line_from_last_iteration, #lines_lengths, 1 do
+  -- `line` is a 0-indexed LSP line number indexing the 1-indexed `lines_lengths`,
+  -- so the last valid line is `#lines_lengths - 1`; iterating up to `#lines_lengths`
+  -- reads `lines_lengths[#lines_lengths + 1]` (nil) and errors.
+  for line = line_from_last_iteration, #lines_lengths - 1, 1 do
     local current_line_length = lines_lengths[line + 1]
     local offset_with_current_line = current_offset + current_line_length
 
